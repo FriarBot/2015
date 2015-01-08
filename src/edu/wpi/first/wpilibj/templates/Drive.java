@@ -6,11 +6,28 @@ import edu.wpi.first.wpilibj.Joystick;
 
 /**
  * Xbox controller axis index:
- * LeftY: 0
+ * 
+ * LeftY: 2
  * LeftX: 1
- * RightY: 2
- * RightX: 3
+ * RightY: 5
+ * RightX: 4
+ * D-Pad: 6
+ * Triggers: 3
+ * 
+ * Button index:
+ * 
+ * A: 1
+ * B: 2
+ * X: 3
+ * Y: 4
+ * LB: 5
+ * RB: 6
+ * Back: 7
+ * Start: 8
+ * LS: 9
+ * RS: 10
  */
+
 public class Drive {
     
     private static Talon rightF;
@@ -28,18 +45,45 @@ public class Drive {
     }
     
     private static void mecanum(Joystick controller){
-        double leftY = controller.getRawAxis(0);
-        double rightX = controller.getRawAxis(3);
+        double leftY = controller.getRawAxis(2);
+        double rightX = controller.getRawAxis(4);
         double leftX = controller.getRawAxis(1);
-        rightF.set(leftY - rightX - leftX);
-        rightB.set(leftY - rightX + leftX);
-        leftF.set(leftY + rightX + leftX);
-        leftB.set(leftY + rightX - leftX);
+        
+        if(leftY - rightX - leftX > 1) {
+            rightF.set(1);
+        } else if (leftY - rightX - leftX < -1){
+            rightF.set(-1);
+        } else {
+            rightF.set(leftY - rightX - leftX);
+        }
+        if(leftY - rightX + leftX > 1) {
+            rightB.set(1);
+        } else if(leftY - rightX + leftX < -1) {
+            rightB.set(-1);
+        } else {
+            rightB.set(leftY - rightX + leftX);
+        }
+        
+        if (leftY + rightX + leftX > 1) {
+            leftF.set(1);
+        } else if (leftY + rightX + leftX < -1) {
+            leftF.set(-1);
+        } else {
+            leftF.set(leftY + rightX + leftX);
+        }
+        
+        if (leftY + rightX - leftX > 1) {
+            leftB.set(1);
+        } else if (leftY + rightX - leftX < -1) {
+            leftB.set(-1);
+        } else {
+            leftB.set(leftY + rightX - leftX);
+        }
     }
     
     private static void tank(Joystick controller) {
-        double leftY = controller.getRawAxis(0);
-        double rightY = controller.getRawAxis(2);
+        double leftY = controller.getRawAxis(2);
+        double rightY = controller.getRawAxis(5);
         rightF.set(rightY);
         rightB.set(leftY);
     }
